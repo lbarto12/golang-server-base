@@ -1,6 +1,10 @@
 Example .ENV
 
 ```.env
+# API
+API_HOST=localhost
+API_PORT=8080
+
 # postgres
 POSTGRES_HOST=localhost
 POSTGRES_PORT=5050
