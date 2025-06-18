@@ -58,7 +58,7 @@ func EnvGetOptions() PostgresOptions {
 func Connect(options PostgresOptions) (*sqlx.DB, error) {
 
 	psqlInfo := fmt.Sprintf(
-		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", // TODO: at some point swap this out for an SSL environment variable?
 		options.Host,
 		options.Port,
 		options.User,
