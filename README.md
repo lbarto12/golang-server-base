@@ -13,12 +13,17 @@ MINIO_DEFAULT_BUCKET=default_bucket
 ```
 
 # How to run
-## In the root directory, follow these steps:
+
+In the root directory, follow these steps:
 
 Launch Postrgres and Minio
-`docker compose up`
+```bash
+docker compose up
+```
 
 Launch the server
-`go run .`
+```bash
+go run .
+```
 
 
