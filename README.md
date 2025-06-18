@@ -1,6 +1,6 @@
 Example .ENV
 
-```
+```.env
 # postgres
 POSTGRES_DATABASE=postgres-database-name
 POSTGRES_USER=postgres_user
