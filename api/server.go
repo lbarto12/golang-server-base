@@ -16,25 +16,29 @@ type Server struct {
 	handlers map[string]http.Handler
 }
 
-func (server *Server) AddHandler(path string, handler http.Handler) error {
+func (server *Server) AddHandler(path string, handler http.Handler) {
 	if server.handlers == nil {
 		server.handlers = map[string]http.Handler{}
 	}
 	if _, exists := server.handlers[path]; exists {
-		return fmt.Errorf("server handler `%s` already exists, and may not be overwritten", path)
+		panic(fmt.Errorf("server handler `%s` already exists, and may not be changed", path))
 	}
 	server.handlers[path] = handler
-	return nil
 }
 
-func (server *Server) AddHandlers(handlers map[string]http.Handler) error {
+func (server *Server) AddHandlers(handlers map[string]http.Handler) {
 	for path, handler := range handlers {
-		err := server.AddHandler(path, handler)
-		if err != nil {
-			return err
-		}
+		server.AddHandler(path, handler)
+
 	}
-	return nil
+}
+
+func (server *Server) Routes() []string {
+	var result []string
+	for path := range server.handlers {
+		result = append(result, path)
+	}
+	return result
 }
 
 func (server *Server) Launch() error {
