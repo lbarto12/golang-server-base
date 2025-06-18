@@ -11,3 +11,19 @@ MINIO_USER=minio_user
 MINIO_PASSWORD=minio_password
 MINIO_DEFAULT_BUCKET=default_bucket
 ```
+
+# How to run
+
+In the root directory, follow these steps:
+
+Launch Postrgres and Minio
+```bash
+docker compose up
+```
+
+Launch the server
+```bash
+go run .
+```
+
+
