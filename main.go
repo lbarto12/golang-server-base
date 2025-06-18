@@ -25,9 +25,9 @@ func main() {
 			w.WriteHeader(http.StatusOK)
 			w.Write([]byte("pong"))
 		}),
-		"/test": http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		"/yurr": http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusOK)
-			w.Write([]byte("yurr"))
+			w.Write([]byte("skrt"))
 		}),
 	})
 
