@@ -1,12 +1,12 @@
 package main
 
 import (
-	"fmt"
 	"golang-server-base/api"
 	"golang-server-base/api/minioapi"
 	"golang-server-base/api/postgresapi"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/joho/godotenv"
 	"github.com/rs/cors"
@@ -28,9 +28,19 @@ func main() {
 	}
 
 	// Create Server
+	apiHost, ok := os.LookupEnv("API_HOST")
+	if !ok {
+		panic("API_HOST environment variable not set")
+	}
+
+	apiPort, ok := os.LookupEnv("API_PORT")
+	if !ok {
+		panic("API_PORT environment variable not set")
+	}
+
 	server := api.Server{
-		Host: "localhost",
-		Port: "8080",
+		Host: apiHost,
+		Port: apiPort,
 		Cors: &cors.Options{
 			AllowedOrigins:   []string{"*"},
 			AllowedMethods:   []string{http.MethodGet, http.MethodPost},
@@ -50,36 +60,6 @@ func main() {
 		}),
 	})
 
-	go Test()
-
 	// Run Server
 	log.Fatal(server.Launch())
-}
-
-func Test() {
-	// time.Sleep(1 * time.Second)
-	fmt.Println("Tests Starting...")
-	// time.Sleep(1 * time.Second)
-
-	// err := minioapi.Init(minioapi.EnvGetOptions())
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-	// log.Println("Connected to MINIO")
-
-	// client := minioapi.Client()
-
-	// err = client.MakeBucket(context.TODO(), "test-bucket", minio.MakeBucketOptions{
-	// 	Region: "us-east-1",
-	// })
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-	// err = client.RemoveBucket(context.TODO(), "test-bucket")
-	// if err != nil {
-	// 	panic(err)
-	// }
-
 }
