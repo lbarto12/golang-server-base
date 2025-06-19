@@ -5,6 +5,7 @@ import (
 	"golang-server-base/api/minioapi"
 	"golang-server-base/api/postgresapi"
 	"golang-server-base/api/routes"
+	"golang-server-base/api/webtokens"
 	"golang-server-base/src"
 	"log"
 	"os"
@@ -23,6 +24,12 @@ func main() {
 	}
 
 	err = postgresapi.Init(postgresapi.EnvGetOptions())
+	if err != nil {
+		panic(err)
+	}
+
+	// Init JWT library
+	err = webtokens.Init()
 	if err != nil {
 		panic(err)
 	}
