@@ -19,5 +19,5 @@ services:
       MINIO_ROOT_PASSWORD: "${MINIO_PASSWORD}"
       MINIO_DEFAULT_BUCKETS: "${MINIO_DEFAULT_BUCKET}"
     volumes:
-      - ./miniolocal/data:/data # Mount a local directory for data persistence
+      - ./api/init/minio/miniolocal/data:/data # Mount a local directory for data persistence
     command: server /data --console-address ":9001"
