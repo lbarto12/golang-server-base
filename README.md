@@ -1,4 +1,26 @@
-Example .ENV
+# What is this project?
+This project is a framework written in go that has a variety prebuilt services, libraries, and driver code common 
+to many apps being built.
+
+Current services and libraries include:
+    - Postgres
+    - Minio
+    - Meilisearch       <---- NOT IMPLEMENTED
+    - Email             <---- NOT IMPLEMENTED
+    - Cors
+
+Current features
+    - Session Handling
+        - Managed by a database table called 'accounts' in postgres
+        - Accessed by the endpoints `"POST /api/sign-up"` and `"POST /api/sign-in"`
+    - API Health checks
+        - Accessed by endpoint(s): `"GET /api/health"`
+    - Managed Service Clients
+        - Services are accessed via the package `<servicename>api`
+            - e.g. `db, err := postgresapi.Database()`
+            - e.g. `client, err := minioapi.Client()`
+
+### Example .env
 
 ```.env
 # API
