@@ -2,14 +2,14 @@
 This project is a framework written in go that has a variety prebuilt services, libraries, and driver code common 
 to many apps being built.
 
-Current services and libraries include:
+- Current services and libraries include:
     - Postgres
     - Minio
     - Meilisearch       <---- NOT IMPLEMENTED
     - Email             <---- NOT IMPLEMENTED
     - Cors
 
-Current features
+- Current features
     - Session Handling
         - Managed by a database table called 'accounts' in postgres
         - Accessed by the endpoints `"POST /api/sign-up"` and `"POST /api/sign-in"`
