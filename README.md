@@ -40,4 +40,46 @@ Launch the server
 go run .
 ```
 
+# Writing your code
 
+To write programs using this framework, keep all of your code within the `src` directory.
+Within this directory are two files: `cors.go` and `main.go`
+
+### main.go
+This is where you will put your code, a server object is injected for you to modify its various properties before it is launched.
+
+```go
+package src
+
+import (
+	"golang-server-base/api"
+)
+
+
+func Main(server *api.Server) {
+	// Run your code here
+}
+```
+
+
+### cors.go
+This is where you can configure cors easily, the return value is a `*cors.Options` object. Its configuration will be applied to the server.
+If you do not wish to have cors in your application, then return `nil` from this function.
+
+```go
+package src
+
+import (
+	"net/http"
+
+	"github.com/rs/cors"
+)
+
+func ConfigureCors() *cors.Options {
+	return &cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowedMethods:   []string{http.MethodGet, http.MethodPost},
+		AllowCredentials: true,
+	}
+}
+```
