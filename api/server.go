@@ -33,6 +33,10 @@ func (server *Server) AddHandlers(handlers map[string]http.Handler) {
 	}
 }
 
+func (server *Server) AddCors(options *cors.Options) {
+	server.Cors = options
+}
+
 func (server *Server) Routes() []string {
 	var result []string
 	for path := range server.handlers {

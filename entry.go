@@ -4,12 +4,12 @@ import (
 	"golang-server-base/api"
 	"golang-server-base/api/minioapi"
 	"golang-server-base/api/postgresapi"
+	"golang-server-base/api/routes"
+	"golang-server-base/src"
 	"log"
-	"net/http"
 	"os"
 
 	"github.com/joho/godotenv"
-	"github.com/rs/cors"
 )
 
 func main() {
@@ -41,24 +41,23 @@ func main() {
 	server := api.Server{
 		Host: apiHost,
 		Port: apiPort,
-		Cors: &cors.Options{
-			AllowedOrigins:   []string{"*"},
-			AllowedMethods:   []string{http.MethodGet, http.MethodPost},
-			AllowCredentials: true,
-		},
 	}
 
-	// Add Handlers
-	server.AddHandlers(map[string]http.Handler{
-		"/ping": http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			w.WriteHeader(http.StatusOK)
-			w.Write([]byte("pong"))
-		}),
-		"/yurr": http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			w.WriteHeader(http.StatusOK)
-			w.Write([]byte("skrt"))
-		}),
-	})
+	// Add Built-In Handlers ============
+
+	// Add Health
+	routes.AddHealthHandlers(&server)
+
+	// Add Session
+	routes.AddSessionHandlers(&server)
+
+	// =========================
+
+	// Set user defined cors
+	server.Cors = src.ConfigureCors()
+
+	// Run user code
+	src.Main(&server)
 
 	// Run Server
 	log.Fatal(server.Launch())
