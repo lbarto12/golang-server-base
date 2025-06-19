@@ -23,6 +23,11 @@ MINIO_USE_SSL=false
 
 # How to run
 
+For first time installation, run the bash script to generate and initialize the services:
+```bash
+./rebuild-docker.sh
+```
+
 In the root directory, follow these steps:
 
 Launch Postrgres and Minio
