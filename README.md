@@ -27,6 +27,9 @@ to many apps being built.
 API_HOST=localhost
 API_PORT=8080
 
+# session
+JWT_SECRET_KEY=my_secret_jwt_key
+
 # postgres
 POSTGRES_HOST=localhost
 POSTGRES_PORT=5050
