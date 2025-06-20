@@ -2,15 +2,14 @@ package routes
 
 import (
 	"encoding/json"
-	"golang-server-base/api"
 	"golang-server-base/api/apiresponses"
 	"golang-server-base/api/postgresapi"
 	postgresmodels "golang-server-base/api/postgresapi/models"
-	"golang-server-base/api/routes/models"
+	"golang-server-base/api/routes/systemservices/models"
 	"net/http"
 )
 
-func SignUp(w http.ResponseWriter, r *http.Request) {
+func (handler SystemServicesHandlers) SignUp(w http.ResponseWriter, r *http.Request) {
 
 	var request models.SignUpRequest
 	err := json.NewDecoder(r.Body).Decode(&request)
@@ -53,7 +52,7 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func SignIn(w http.ResponseWriter, r *http.Request) {
+func (handler SystemServicesHandlers) SignIn(w http.ResponseWriter, r *http.Request) {
 
 	var request models.SignInRequest
 	err := json.NewDecoder(r.Body).Decode(&request)
@@ -91,12 +90,4 @@ func SignIn(w http.ResponseWriter, r *http.Request) {
 		Message: "successfully signed in",
 	})
 
-}
-
-// Add handlers
-func AddSessionHandlers(server *api.Server) {
-	server.AddHandlers(map[string]http.Handler{
-		"POST /public/api/sign-up": http.HandlerFunc(SignUp),
-		"POST /public/api/sign-in": http.HandlerFunc(SignIn),
-	})
 }

@@ -4,10 +4,11 @@ import (
 	"golang-server-base/api"
 	"golang-server-base/api/minioapi"
 	"golang-server-base/api/postgresapi"
-	"golang-server-base/api/routes"
+	routes "golang-server-base/api/routes/systemservices"
 	"golang-server-base/api/webtokens"
 	"golang-server-base/src"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -52,16 +53,18 @@ func main() {
 
 	// Add Built-In Handlers ============
 
-	// Add Health
-	routes.AddHealthHandlers(&server)
+	var systemhandlers routes.SystemServicesInterface = new(routes.SystemServicesHandlers)
 
-	// Add Session
-	routes.AddSessionHandlers(&server)
+	server.AddHandlers(map[string]http.Handler{
+		"GET /api/health":          http.HandlerFunc(systemhandlers.Health),
+		"POST /public/api/sign-up": http.HandlerFunc(systemhandlers.SignUp),
+		"POST /public/api/sign-in": http.HandlerFunc(systemhandlers.SignIn),
+	})
 
 	// =========================
 
 	// Add Built-in Middleware
-	server.AddMiddleWares(src.CongiureMiddleware())
+	server.AddMiddleWares(src.ConfigureMiddleware())
 
 	// Set user defined cors
 	server.Cors = src.ConfigureCors()
