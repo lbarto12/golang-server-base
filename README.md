@@ -7,6 +7,7 @@ to many apps being built.
     - Minio
     - Meilisearch       <---- NOT IMPLEMENTED
     - Email             <---- NOT IMPLEMENTED
+    - PDF Generation    <---- NOT IMPLEMENTED
     - Cors
 
 - Current features
