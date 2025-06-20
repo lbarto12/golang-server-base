@@ -9,11 +9,23 @@ import (
 	"github.com/rs/cors"
 )
 
+type Middleware func(next http.Handler) http.Handler
+
 type Server struct {
-	Host     string
-	Port     string
-	Cors     *cors.Options
-	handlers map[string]http.Handler
+	Host       string
+	Port       string
+	Cors       *cors.Options
+	handlers   map[string]http.Handler
+	Mux        *http.ServeMux
+	middleware []Middleware
+}
+
+func (server *Server) AddMiddleWare(middleware Middleware) {
+	server.middleware = append(server.middleware, middleware)
+}
+
+func (server *Server) AddMiddleWares(middleware []Middleware) {
+	server.middleware = append(server.middleware, middleware...)
 }
 
 func (server *Server) AddHandler(path string, handler http.Handler) {
@@ -45,9 +57,12 @@ func (server *Server) Routes() []string {
 	return result
 }
 
+func NewServer(initial Server) Server {
+	initial.Mux = &http.ServeMux{}
+	return initial
+}
+
 func (server *Server) Launch() error {
-	// Create MUX
-	mux := http.NewServeMux()
 
 	// Assert required options are not null
 	if server.Host == "" {
@@ -62,13 +77,18 @@ func (server *Server) Launch() error {
 
 	// Add Handlers
 	for path, handler := range server.handlers {
-		mux.Handle(path, handler)
+		server.Mux.Handle(path, handler)
 	}
 
 	// Add CORS, if applied
-	handler := http.Handler(mux)
+	handler := http.Handler(server.Mux)
 	if server.Cors != nil {
-		handler = cors.New(*server.Cors).Handler(mux)
+		handler = cors.New(*server.Cors).Handler(server.Mux)
+	}
+
+	// Add all applied middleware
+	for _, middleware := range server.middleware {
+		handler = middleware(handler)
 	}
 
 	// Launch Server

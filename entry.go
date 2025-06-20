@@ -45,10 +45,10 @@ func main() {
 		panic("API_PORT environment variable not set")
 	}
 
-	server := api.Server{
+	server := api.NewServer(api.Server{
 		Host: apiHost,
 		Port: apiPort,
-	}
+	})
 
 	// Add Built-In Handlers ============
 
@@ -59,6 +59,9 @@ func main() {
 	routes.AddSessionHandlers(&server)
 
 	// =========================
+
+	// Add Built-in Middleware
+	server.AddMiddleWares(src.CongiureMiddleware())
 
 	// Set user defined cors
 	server.Cors = src.ConfigureCors()

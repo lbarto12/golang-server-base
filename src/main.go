@@ -3,6 +3,8 @@ package src
 import (
 	"fmt"
 	"golang-server-base/api"
+	"golang-server-base/src/routes/systemservices"
+	"net/http"
 )
 
 /*
@@ -19,5 +21,13 @@ Params:
 */
 func Main(server *api.Server) {
 	fmt.Println("In main")
+
+	// server.AddMiddleWare(all)
+
+	var ssi systemservices.SystemServicesInterface = new(systemservices.SystemServicesHandlers)
+
+	server.AddHandlers(map[string]http.Handler{
+		"GET /api/healthcheck": http.HandlerFunc(ssi.DoHealthCheck),
+	})
 
 }

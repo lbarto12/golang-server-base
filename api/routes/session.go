@@ -96,7 +96,7 @@ func SignIn(w http.ResponseWriter, r *http.Request) {
 // Add handlers
 func AddSessionHandlers(server *api.Server) {
 	server.AddHandlers(map[string]http.Handler{
-		"POST /api/sign-up": http.HandlerFunc(SignUp),
-		"POST /api/sign-in": http.HandlerFunc(SignIn),
+		"POST /public/api/sign-up": http.HandlerFunc(SignUp),
+		"POST /public/api/sign-in": http.HandlerFunc(SignIn),
 	})
 }
