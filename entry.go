@@ -53,7 +53,7 @@ func main() {
 
 	// Add Built-In Handlers ============
 
-	var systemhandlers routes.SystemServicesInterface = new(routes.SystemServicesHandlers)
+	systemhandlers := routes.SystemServicesHandlers{}
 
 	server.AddHandlers(map[string]http.Handler{
 		"GET /api/health":          http.HandlerFunc(systemhandlers.Health),

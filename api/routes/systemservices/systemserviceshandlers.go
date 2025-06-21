@@ -7,6 +7,9 @@ import (
 	"github.com/minio/minio-go/v7"
 )
 
+// Enforce Routes
+var _ SystemServicesInterface = new(SystemServicesHandlers)
+
 type SystemServicesInterface interface {
 	Health(w http.ResponseWriter, r *http.Request)
 	SignUp(w http.ResponseWriter, r *http.Request)
