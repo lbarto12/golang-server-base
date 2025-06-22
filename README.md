@@ -157,7 +157,7 @@ This is because, under the hood, the app will repeatedly wrap the `*http.ServeMu
 
 In the `middleware.go` file, you may include any preconfigured or user made middleware so long as it matches the specificiations. To include middleware,
 it must be written as a function that accepts, and returns, an `http.Handler` object. This allows for configurations prior to adding the middleware, and
-lets each middlware propogate to the next.
+lets each middleware propogate to the next.
 
 Example of including the above middleware in your project, with settings:
 
