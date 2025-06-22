@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"slices"
 
 	"github.com/rs/cors"
 )
@@ -86,7 +87,8 @@ func (server *Server) Launch() error {
 		handler = cors.New(*server.Cors).Handler(server.Mux)
 	}
 
-	// Add all applied middleware
+	// Add all applied middleware, in the order specified. Requires reversing the array
+	slices.Reverse(server.middleware)
 	for _, middleware := range server.middleware {
 		handler = middleware(handler)
 	}

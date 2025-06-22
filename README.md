@@ -109,3 +109,88 @@ func ConfigureCors() *cors.Options {
 	}
 }
 ```
+
+
+### middleware.go
+This is where you can add middleware to your application's endpoints.
+
+To create new middleware, it must be designed as a struct that implements the `ServeHTTP` method from the `http.Handler` interface. 
+
+e.g.
+```go
+type Middleware struct {
+	next   http.Handler
+	config MiddlewareConfig
+}
+
+type MiddlewareConfig struct {
+	PathPrefixExclusions []string
+}
+
+func NewMiddleware(next http.Handler, config MiddlewareConfig) *Middleware {
+	return &Middleware{
+		next,
+		config,
+	}
+}
+
+func (mw Middleware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	path := strings.TrimSpace(strings.ToLower(r.URL.Path))
+
+	// Example: Exclude middeware from paths
+	if mw.config.PathPrefixExclusions != nil {
+		for _, exclusion := range mw.config.PathPrefixExclusions {
+			if strings.HasPrefix(path, exclusion) {
+				mw.next.ServeHTTP(w, r)
+				return
+			}
+		}
+	}
+
+    // Your middleware's functionality
+
+	mw.next.ServeHTTP(w, r)
+}
+```
+
+This is because, under the hood, the app will repeatedly wrap the `*http.ServeMux` in the next included middleware until it has applied all of it.
+
+In the `middleware.go` file, you may include any preconfigured or user made middleware so long as it matches the specificiations. To include middleware,
+it must be written as a function that accepts, and returns, an `http.Handler` object. This allows for configurations prior to adding the middleware, and
+lets each middlware propogate to the next.
+
+Example of including the above middleware in your project, with settings:
+
+```go
+package src
+
+import (
+	"golang-server-base/api"
+	"golang-server-base/api/webtokens"
+	"net/http"
+)
+
+func ConfigureMiddleware() []api.Middleware {
+	return []api.Middleware{
+		func(next http.Handler) http.Handler {
+			return webtokens.NewMiddleware(next, webtokens.MiddlewareConfig{
+				PathPrefixExclusions: []string{"/public", "public"},
+			})
+		},
+	}
+}
+```
+
+## !!! IMPORTANT !!!
+
+Middleware listed in this function will be applied `IN ORDER`, from top to bottom. Internally, the framework will reverse the array so that the
+middleware that comes first in the list will be run first. 
+
+This is what the code to apply middleware looks like:
+```go
+// Add all applied middleware, in the order specified. Requires reversing the array
+slices.Reverse(server.middleware)
+for _, middleware := range server.middleware {
+    handler = middleware(handler)
+}
+```
