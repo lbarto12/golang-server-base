@@ -51,8 +51,9 @@ func main() {
 		Port: apiPort,
 	})
 
-	// Add Built-In Handlers ============
+	// Add Handlers ============
 
+	// Builtin
 	systemhandlers := routes.SystemServicesHandlers{}
 
 	server.AddHandlers(map[string]http.Handler{
@@ -60,6 +61,10 @@ func main() {
 		"POST /public/api/sign-up": http.HandlerFunc(systemhandlers.SignUp),
 		"POST /public/api/sign-in": http.HandlerFunc(systemhandlers.SignIn),
 	})
+
+	// User defined
+	// Add from `routes.go` in `src`
+	server.AddHandlers(src.ConfigureRoutes())
 
 	// =========================
 

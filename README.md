@@ -111,6 +111,33 @@ func ConfigureCors() *cors.Options {
 ```
 
 
+### routes.go
+This is where you can add your custom routes to the application.
+
+Routes that you want to add should be specified as a key value pair in the returned `map`, with the key being the path of the endpoint, and the value
+being the function itself.
+
+It is `not reccomended` that you pass in anonymous functions as the value for your routes, and instead define them in their own packages. The following
+does so for the sake of demonstration.
+
+Here is how you might add a `ping` endpoint to your application:
+
+```go
+package src
+
+import "net/http"
+
+func ConfigureRoutes() map[string]http.Handler {
+	return map[string]http.Handler{
+		"GET /public/ping": http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte("pong"))
+		}),
+	}
+}
+```
+
+
 ### middleware.go
 This is where you can add middleware to your application's endpoints.
 
