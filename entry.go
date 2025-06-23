@@ -2,6 +2,7 @@ package main
 
 import (
 	"golang-server-base/api"
+	"golang-server-base/api/emailapi"
 	"golang-server-base/api/minioapi"
 	"golang-server-base/api/postgresapi"
 	routes "golang-server-base/api/routes/systemservices"
@@ -31,6 +32,12 @@ func main() {
 
 	// Init JWT library
 	err = webtokens.Init()
+	if err != nil {
+		panic(err)
+	}
+
+	// Init SMTP
+	err = emailapi.Init(emailapi.EnvGetOptions())
 	if err != nil {
 		panic(err)
 	}

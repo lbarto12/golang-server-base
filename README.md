@@ -45,6 +45,12 @@ MINIO_USER=minio_user
 MINIO_PASSWORD=minio_password
 MINIO_DEFAULT_BUCKET=default_bucket
 MINIO_USE_SSL=false
+
+# SMTP
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_SENDER=youremail
+SMTP_PASSWORD=yourpassword
 ```
 
 # How to run
