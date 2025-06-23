@@ -6,7 +6,7 @@ to many apps being built.
     - Postgres
     - Minio
     - Meilisearch       <---- NOT IMPLEMENTED
-    - Email             <---- NOT IMPLEMENTED
+    - Email
     - PDF Generation    <---- NOT IMPLEMENTED
     - Cors
 
@@ -20,6 +20,21 @@ to many apps being built.
         - Services are accessed via the package `<servicename>api`
             - e.g. `db, err := postgresapi.Database()`
             - e.g. `client, err := minioapi.Client()`
+			- e.g. `err := emailapi.Send(...)`
+
+
+# Installation
+To install, simply clone the repo and run `go mod tidy` or `go mod download` to install all required packages
+
+To customize the schema of your postgres instance, modify the `init.sql` file located in `<project-root>/api/init/postgres/`
+
+Run the bash script to generate and initialize the services:
+```bash
+./rebuild-docker.sh
+```
+This will also launch the services with `docker compose up`
+
+
 
 ### Example .env
 
@@ -54,11 +69,6 @@ SMTP_PASSWORD=yourpassword
 ```
 
 # How to run
-
-For first time installation, run the bash script to generate and initialize the services:
-```bash
-./rebuild-docker.sh
-```
 
 In the root directory, follow these steps:
 
@@ -226,4 +236,49 @@ slices.Reverse(server.middleware)
 for _, middleware := range server.middleware {
     handler = middleware(handler)
 }
+```
+
+# Services
+
+## Postgres
+The internal postgres api is implemented using `sqlx`. You can access the database by doing the following:
+
+```go
+import "golang-server-base/api/postgresapi"
+
+db, err := postgresapi.Database()
+if err != nil {
+	...
+}
+```
+This will return an `*sqlx.DB` object. The usage of this object remains the same as the package it is imported from: 
+<a>github.com/jmoiron/sqlx</a> 
+
+
+## Minio
+The internal minio client uses <a>github.com/minio/minio-go/v7</a> and can be accessed like so:
+
+```go
+import "golang-server-base/api/minioapi"
+
+client := minioapi.Client()
+```
+Since the minio client is not instantiated with an active connection to the store, no error is returned. Errors regarding this connection will
+occur when the client is used. (TODO: There must be a clean way to test the connection...)
+
+
+## Email
+The internal email api is implemented using gomail (<a>gopkg.in/gomail.v2</a>), and can be used as follows:
+
+```go
+import "golang-server-base/api/emailapi"
+import emailmodels "golang-server-base/api/emailapi/models"
+
+err := emailapi.Send(emailmodels.EmailOptions{
+	...
+})
+if err != nil {
+	...
+}
+
 ```
