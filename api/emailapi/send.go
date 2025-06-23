@@ -18,7 +18,7 @@ func SendEmail(options models.EmailOptions) error {
 
 // example use
 // log.Fatal(emailapi.SendEmail(models.EmailOptions{
-// 	To:       "recepient@host.com",
+// 	To:       "recipient@host.com",
 // 	Subject:  "testing email",
 // 	BodyType: "text/plain",
 // 	Body:     "did you get this?",
