@@ -241,7 +241,7 @@ for _, middleware := range server.middleware {
 # Services
 
 ## Postgres
-The internal postgres api is implemented using `sqlx`. You can access the database by doing the following:
+The internal postgres api is implemented using [sqlx](https://github.com/jmoiron/sqlx). You can access the database by doing the following:
 
 ```go
 import "golang-server-base/api/postgresapi"
@@ -251,12 +251,11 @@ if err != nil {
 	...
 }
 ```
-This will return an `*sqlx.DB` object. The usage of this object remains the same as the package it is imported from: 
-<a>github.com/jmoiron/sqlx</a> 
+This will return an `*sqlx.DB` object. The usage of this object remains the same as the package it is imported from.
 
 
 ## Minio
-The internal minio client uses <a>github.com/minio/minio-go/v7</a> and can be accessed like so:
+The internal minio client uses [minio-go](https://github.com/minio/minio-go) and can be accessed like so:
 
 ```go
 import "golang-server-base/api/minioapi"
@@ -268,7 +267,7 @@ occur when the client is used. (TODO: There must be a clean way to test the conn
 
 
 ## Email
-The internal email api is implemented using gomail (<a>gopkg.in/gomail.v2</a>), and can be used as follows:
+The internal email api is implemented using [gomail](https://github.com/go-gomail/gomail), and can be used as follows:
 
 ```go
 import "golang-server-base/api/emailapi"
