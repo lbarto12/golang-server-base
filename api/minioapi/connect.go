@@ -8,6 +8,8 @@ import (
 	"github.com/minio/minio-go/v7/pkg/credentials"
 )
 
+var minioClient *minio.Client
+
 func EnvGetOptions() MinioOptions {
 	endpoint, ok := os.LookupEnv("MINIO_ENDPOINT")
 	if !ok {
@@ -46,4 +48,14 @@ func Connect(options MinioOptions) (*minio.Client, error) {
 		Creds:  credentials.NewStaticV4(options.AccessKey, options.SecretAccessKey, ""),
 		Secure: options.UseSSL,
 	})
+}
+
+func Init(options MinioOptions) error {
+	var err error
+	minioClient, err = Connect(options)
+	return err
+}
+
+func Client() *minio.Client {
+	return minioClient
 }

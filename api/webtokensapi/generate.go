@@ -1,23 +1,10 @@
-package webtokens
+package webtokensapi
 
 import (
-	"errors"
-	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 )
-
-var jwtKey []byte
-
-func Init() error {
-	secretKey, exists := os.LookupEnv("JWT_SECRET_KEY")
-	if !exists {
-		return errors.New("JWT_SECRET_KEY environment variable not set")
-	}
-	jwtKey = []byte(secretKey)
-	return nil
-}
 
 func GenerateJWT(subject string, expires time.Time) (string, error) {
 	claims := jwt.MapClaims{

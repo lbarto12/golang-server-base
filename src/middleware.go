@@ -2,7 +2,7 @@ package src
 
 import (
 	"golang-server-base/api"
-	"golang-server-base/api/webtokens"
+	"golang-server-base/api/webtokensapi"
 	"net/http"
 )
 
@@ -25,7 +25,7 @@ By default, middleware affects all routes.
 func ConfigureMiddleware() []api.Middleware {
 	return []api.Middleware{
 		func(next http.Handler) http.Handler {
-			return webtokens.NewWebTokenMiddleware(next, webtokens.WebTokenMiddleWareConfig{
+			return webtokensapi.NewWebTokenMiddleware(next, webtokensapi.WebTokenMiddleWareConfig{
 				PathPrefixExclusions: []string{"/public", "public"},
 			})
 		},

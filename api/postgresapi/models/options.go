@@ -1,4 +1,4 @@
-package postgresapi
+package models
 
 type PostgresOptions struct {
 	Host               string

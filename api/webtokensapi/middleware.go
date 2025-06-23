@@ -1,4 +1,4 @@
-package webtokens
+package webtokensapi
 
 import (
 	"net/http"

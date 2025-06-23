@@ -7,7 +7,7 @@ import (
 	"golang-server-base/api/minioapi"
 	"golang-server-base/api/postgresapi"
 	routes "golang-server-base/api/routes/systemservices"
-	"golang-server-base/api/webtokens"
+	"golang-server-base/api/webtokensapi"
 	"golang-server-base/src"
 	"log"
 	"net/http"
@@ -32,7 +32,7 @@ func main() {
 	}
 
 	// Init JWT library
-	err = webtokens.Init()
+	err = webtokensapi.Init()
 	if err != nil {
 		panic(err)
 	}

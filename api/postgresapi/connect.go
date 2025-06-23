@@ -2,6 +2,7 @@ package postgresapi
 
 import (
 	"fmt"
+	"golang-server-base/api/postgresapi/models"
 	"os"
 	"strconv"
 
@@ -9,7 +10,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func EnvGetOptions() PostgresOptions {
+func EnvGetOptions() models.PostgresOptions {
 	host, ok := os.LookupEnv("POSTGRES_HOST")
 	if !ok {
 		panic("POSTGRES_HOST environment variable not set")
@@ -45,7 +46,7 @@ func EnvGetOptions() PostgresOptions {
 		panic("POSTGRES_MAX_OPEN_CONNECTIONS variable not a valid integer")
 	}
 
-	return PostgresOptions{
+	return models.PostgresOptions{
 		Host:               host,
 		Port:               port,
 		User:               user,
@@ -55,7 +56,7 @@ func EnvGetOptions() PostgresOptions {
 	}
 }
 
-func Connect(options PostgresOptions) (*sqlx.DB, error) {
+func Connect(options models.PostgresOptions) (*sqlx.DB, error) {
 
 	psqlInfo := fmt.Sprintf(
 		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", // TODO: at some point swap this out for an SSL environment variable?

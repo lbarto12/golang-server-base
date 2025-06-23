@@ -4,7 +4,7 @@ import (
 	"errors"
 	"golang-server-base/api/postgresapi/models"
 	"golang-server-base/api/postgresapi/postgresutils"
-	"golang-server-base/api/webtokens"
+	"golang-server-base/api/webtokensapi"
 	"time"
 )
 
@@ -73,7 +73,7 @@ func SignUp(request models.Account) error {
 func SignIn(request models.Account, jwtSessionToken string) (string, error) {
 	// Try with token first if fields are null, do not allow sign in with token if any credentials are provided alongside it
 	if jwtSessionToken != "" && request.Email == "" && request.Password == "" {
-		token, err := webtokens.VerifyToken(jwtSessionToken)
+		token, err := webtokensapi.VerifyToken(jwtSessionToken)
 		if err == nil && token.Valid {
 			return jwtSessionToken, nil
 		}
@@ -120,5 +120,5 @@ func SignIn(request models.Account, jwtSessionToken string) (string, error) {
 		return "", err
 	}
 
-	return webtokens.GenerateJWT(request.Email, time.Now().Add(24*time.Hour))
+	return webtokensapi.GenerateJWT(request.Email, time.Now().Add(24*time.Hour))
 }
