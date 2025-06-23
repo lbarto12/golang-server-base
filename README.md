@@ -5,7 +5,7 @@ to many apps being built.
 - Current services and libraries include:
     - Postgres
     - Minio
-    - Meilisearch       <---- NOT IMPLEMENTED
+    - Meilisearch
     - Email
     - PDF Generation    <---- NOT IMPLEMENTED
     - Cors
