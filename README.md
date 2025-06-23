@@ -71,6 +71,7 @@ SMTP_PASSWORD=yourpassword
 MEILI_HOST=http://localhost
 MEILI_PORT=7700
 MEILI_MASTER_KEY=my_secret_meili_master_key
+MEILI_LOG_LEVEL=WARN
 ```
 
 # How to run

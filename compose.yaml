@@ -1,5 +1,5 @@
 services:
-  database:
+  postgres:
     image: "postgres:latest"
     ports:
       - 5050:5432
@@ -9,6 +9,11 @@ services:
       POSTGRES_DB: "${POSTGRES_DATABASE}"
     volumes:
       - ./api/init/postgres:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DATABASE}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   minio:
     image: minio/minio
     ports:
@@ -18,9 +23,15 @@ services:
       MINIO_ROOT_USER: "${MINIO_USER}" 
       MINIO_ROOT_PASSWORD: "${MINIO_PASSWORD}"
       MINIO_DEFAULT_BUCKETS: "${MINIO_DEFAULT_BUCKET}"
+      MEILI_LOG_LEVEL: "${MEILI_LOG_LEVEL}" 
     volumes:
       - ./api/init/minio/miniolocal/data:/data # Mount a local directory for data persistence
     command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
   meilisearch:
     image: getmeili/meilisearch:latest
     ports:
@@ -30,6 +41,7 @@ services:
     environment:
       MEILI_MASTER_KEY: "${MEILI_MASTER_KEY}"
     healthcheck:
-      test: set -o pipefail;curl -fsS http://${MEILI_HOST}:${MEILI_PORT}/health | grep -q '{"status":"available"}'
-      retries: 3
+      test: ["CMD", "curl", "-f", "http://localhost:${MEILI_PORT}/health"]
+      interval: 10s
       timeout: 5s
+      retries: 3

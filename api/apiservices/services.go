@@ -14,6 +14,7 @@ type ServicesAccess struct {
 	Meilisarch *meilisearch.ServiceManager
 }
 
+// Available Services
 const (
 	Postgres    = iota
 	Minio       = iota
