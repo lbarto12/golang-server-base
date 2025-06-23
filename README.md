@@ -273,8 +273,6 @@ And omit unused services from the configuration
 func ConfigureServices() []api.Service {
 	return []api.Service{
 		apiservices.Postgres,
-		~~apiservices.Minio~~,
-		~~apiservices.Meilisearch~~,
 		apiservices.Email,
 		apiservices.Sessions,
 		apiservices.Webtokens,
