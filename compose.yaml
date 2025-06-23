@@ -21,3 +21,15 @@ services:
     volumes:
       - ./api/init/minio/miniolocal/data:/data # Mount a local directory for data persistence
     command: server /data --console-address ":9001"
+  meilisearch:
+    image: getmeili/meilisearch:latest
+    ports:
+      - "${MEILI_PORT}:7700"
+    volumes:
+      - ./api/init/meilisearch/meili_local/meili_data:/meili_data
+    environment:
+      MEILI_MASTER_KEY: "${MEILI_MASTER_KEY}"
+    healthcheck:
+      test: set -o pipefail;curl -fsS http://${MEILI_HOST}:${MEILI_PORT}/health | grep -q '{"status":"available"}'
+      retries: 3
+      timeout: 5s

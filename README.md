@@ -281,3 +281,18 @@ if err != nil {
 }
 
 ```
+
+
+## Meilisearch
+The internal meilisearch client uses [meilisearch-go](https://github.com/meilisearch/meilisearch-go) and can be accessed like so:
+
+```go
+import "golang-server-base/api/meilisearchapi"
+
+client, err := meilisearchapi.Client()
+if err != nil {
+
+}
+```
+
+`meilisearch.Client()` will return `nil, error` if the service is deemed unhealthy.

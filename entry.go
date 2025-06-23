@@ -3,6 +3,7 @@ package main
 import (
 	"golang-server-base/api"
 	"golang-server-base/api/emailapi"
+	"golang-server-base/api/meilisearchapi"
 	"golang-server-base/api/minioapi"
 	"golang-server-base/api/postgresapi"
 	routes "golang-server-base/api/routes/systemservices"
@@ -41,6 +42,9 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	// Init Meilisearch
+	meilisearchapi.Init(meilisearchapi.EnvGetOptions())
 
 	// Create Server
 	apiHost, ok := os.LookupEnv("API_HOST")
