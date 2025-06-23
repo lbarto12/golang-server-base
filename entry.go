@@ -29,6 +29,7 @@ func main() {
 	serviceAccess := apiservices.ServicesAccess{}
 	var err error
 
+	// Init Postgres
 	if slices.Contains(enabledServices, apiservices.Postgres) {
 		err = postgresapi.Init(postgresapi.EnvGetOptions())
 		if err != nil {
@@ -41,6 +42,7 @@ func main() {
 		serviceAccess.Postgres = db
 	}
 
+	// Init Minio
 	if slices.Contains(enabledServices, apiservices.Minio) {
 		err := minioapi.Init(minioapi.EnvGetOptions())
 		if err != nil {
