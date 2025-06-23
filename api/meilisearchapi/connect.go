@@ -34,9 +34,13 @@ func EnvGetOptions() models.MeilisearchOptions {
 	}
 }
 
-func Init(options models.MeilisearchOptions) {
+func Init(options models.MeilisearchOptions) error {
 	url := fmt.Sprintf("%s:%s", options.Host, options.Port)
 	client = meilisearch.New(url, meilisearch.WithAPIKey(options.APIKey))
+	if !client.IsHealthy() {
+		return errors.New("meilisearch service not available")
+	}
+	return nil
 }
 
 func Client() (meilisearch.ServiceManager, error) {

@@ -11,6 +11,7 @@ import (
 )
 
 type Middleware func(next http.Handler) http.Handler
+type Service int
 
 type Server struct {
 	Host       string
@@ -19,6 +20,11 @@ type Server struct {
 	handlers   map[string]http.Handler
 	Mux        *http.ServeMux
 	middleware []Middleware
+	services   []Service
+}
+
+func (server *Server) AddServices(services []Service) {
+	server.services = append(server.services, services...)
 }
 
 func (server *Server) AddMiddleWare(middleware Middleware) {

@@ -2,6 +2,7 @@ package main
 
 import (
 	"golang-server-base/api"
+	"golang-server-base/api/apiservices"
 	"golang-server-base/api/emailapi"
 	"golang-server-base/api/meilisearchapi"
 	"golang-server-base/api/minioapi"
@@ -12,6 +13,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"slices"
 
 	"github.com/joho/godotenv"
 )
@@ -20,31 +22,49 @@ func main() {
 	// Load Env
 	godotenv.Load()
 
+	enabledServices := src.ConfigureServices()
+
 	// Init connections with services
-	err := minioapi.Init(minioapi.EnvGetOptions())
-	if err != nil {
-		panic(err)
+
+	var err error
+
+	if slices.Contains(enabledServices, apiservices.Postgres) {
+		err = postgresapi.Init(postgresapi.EnvGetOptions())
+		if err != nil {
+			panic(err)
+		}
 	}
 
-	err = postgresapi.Init(postgresapi.EnvGetOptions())
-	if err != nil {
-		panic(err)
+	if slices.Contains(enabledServices, apiservices.Minio) {
+		err := minioapi.Init(minioapi.EnvGetOptions())
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	// Init JWT library
-	err = webtokensapi.Init()
-	if err != nil {
-		panic(err)
+	if slices.Contains(enabledServices, apiservices.Webtokens) {
+		err = webtokensapi.Init()
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	// Init SMTP
-	err = emailapi.Init(emailapi.EnvGetOptions())
-	if err != nil {
-		panic(err)
+	if slices.Contains(enabledServices, apiservices.Email) {
+		err = emailapi.Init(emailapi.EnvGetOptions())
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	// Init Meilisearch
-	meilisearchapi.Init(meilisearchapi.EnvGetOptions())
+	if slices.Contains(enabledServices, apiservices.Meilisearch) {
+		err = meilisearchapi.Init(meilisearchapi.EnvGetOptions())
+		if err != nil {
+			panic(err)
+		}
+	}
 
 	// Create Server
 	apiHost, ok := os.LookupEnv("API_HOST")
@@ -66,20 +86,23 @@ func main() {
 
 	// Builtin
 	systemhandlers := routes.SystemServicesHandlers{}
+	server.AddHandler("GET /public/api/health", http.HandlerFunc(systemhandlers.Health))
 
-	server.AddHandlers(map[string]http.Handler{
-		"GET /api/health":          http.HandlerFunc(systemhandlers.Health),
-		"POST /public/api/sign-up": http.HandlerFunc(systemhandlers.SignUp),
-		"POST /public/api/sign-in": http.HandlerFunc(systemhandlers.SignIn),
-	})
+	if slices.Contains(enabledServices, apiservices.Sessions) {
+		server.AddHandlers(map[string]http.Handler{
+			"POST /public/api/sign-up": http.HandlerFunc(systemhandlers.SignUp),
+			"POST /public/api/sign-in": http.HandlerFunc(systemhandlers.SignIn),
+		})
+	}
 
 	// User defined
+
 	// Add from `routes.go` in `src`
 	server.AddHandlers(src.ConfigureRoutes())
 
 	// =========================
 
-	// Add Built-in Middleware
+	// Add Middleware
 	server.AddMiddleWares(src.ConfigureMiddleware())
 
 	// Set user defined cors

@@ -66,6 +66,11 @@ SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_SENDER=youremail
 SMTP_PASSWORD=yourpassword
+
+# meilisearch
+MEILI_HOST=http://localhost
+MEILI_PORT=7700
+MEILI_MASTER_KEY=my_secret_meili_master_key
 ```
 
 # How to run
@@ -85,7 +90,7 @@ go run .
 # Writing your code
 
 To write programs using this framework, keep all of your code within the `src` directory.
-Within this directory are two files: `cors.go` and `main.go`
+Within this directory are a few files:
 
 ### main.go
 This is where you will put your code, a server object is injected for you to modify its various properties before it is launched.
@@ -235,6 +240,45 @@ This is what the code to apply middleware looks like:
 slices.Reverse(server.middleware)
 for _, middleware := range server.middleware {
     handler = middleware(handler)
+}
+```
+
+### services.go
+
+Here you can specify which services you want to enable in your app. To enable a service, import it from `/api/apiservices` and include it in the returned array:
+
+```go
+func ConfigureServices() []api.Service {
+	return []api.Service{
+		apiservices.Postgres,
+		apiservices.Minio,
+		apiservices.Meilisearch,
+		apiservices.Email,
+		apiservices.Sessions,
+		apiservices.Webtokens,
+	}
+}
+```
+Any skipped services will not be initialized and will throw errors when their methods are accessed.
+
+In the event you want to remove services that rely on docker containers, you can launch the app with only certain containers active like so:
+
+e.g. launch with *only* the postgres service active
+
+```bash
+docker compose up database
+```
+And omit unused services from the configuration
+```go
+func ConfigureServices() []api.Service {
+	return []api.Service{
+		apiservices.Postgres,
+		~~apiservices.Minio~~,
+		~~apiservices.Meilisearch~~,
+		apiservices.Email,
+		apiservices.Sessions,
+		apiservices.Webtokens,
+	}
 }
 ```
 
