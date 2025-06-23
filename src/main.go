@@ -1,7 +1,6 @@
 package src
 
 import (
-	"fmt"
 	"golang-server-base/api"
 )
 
@@ -18,5 +17,5 @@ Params:
 `server`: The server obect, this allows you to modify properties of the server before it is launched
 */
 func Main(server *api.Server) {
-	fmt.Println("In main")
+
 }
