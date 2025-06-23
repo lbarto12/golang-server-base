@@ -3,6 +3,7 @@ package api
 import (
 	"errors"
 	"fmt"
+	"golang-server-base/api/apiservices"
 	"log"
 	"net/http"
 	"slices"
@@ -21,6 +22,7 @@ type Server struct {
 	Mux        *http.ServeMux
 	middleware []Middleware
 	services   []Service
+	Services   apiservices.ServicesAccess
 }
 
 func (server *Server) AddServices(services []Service) {

@@ -19,5 +19,4 @@ Params:
 */
 func Main(server *api.Server) {
 	fmt.Println("In main")
-
 }

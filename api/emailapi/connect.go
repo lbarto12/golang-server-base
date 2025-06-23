@@ -47,3 +47,7 @@ func Init(options models.DialerOptions) error {
 	dialer = gomail.NewDialer(options.SMTPServer, int(port), options.Sender, options.Password)
 	return nil
 }
+
+func Dialer() *gomail.Dialer {
+	return dialer
+}

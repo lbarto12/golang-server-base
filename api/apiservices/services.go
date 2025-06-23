@@ -1,5 +1,23 @@
 package apiservices
 
+import (
+	"github.com/jmoiron/sqlx"
+	"github.com/meilisearch/meilisearch-go"
+	"github.com/minio/minio-go/v7"
+	"gopkg.in/gomail.v2"
+)
+
+type ServicesAccess struct {
+	Postgres   *sqlx.DB
+	Minio      *minio.Client
+	Email      *gomail.Dialer
+	Meilisarch *meilisearch.ServiceManager
+}
+
+func Test() {
+
+}
+
 const (
 	Postgres    = iota
 	Minio       = iota

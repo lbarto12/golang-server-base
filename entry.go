@@ -26,6 +26,7 @@ func main() {
 
 	// Init connections with services
 
+	serviceAccess := apiservices.ServicesAccess{}
 	var err error
 
 	if slices.Contains(enabledServices, apiservices.Postgres) {
@@ -33,6 +34,11 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
+		db, err := postgresapi.Database()
+		if err != nil {
+			panic(err)
+		}
+		serviceAccess.Postgres = db
 	}
 
 	if slices.Contains(enabledServices, apiservices.Minio) {
@@ -40,6 +46,8 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
+		client := minioapi.Client()
+		serviceAccess.Minio = client
 	}
 
 	// Init JWT library
@@ -56,6 +64,7 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
+		serviceAccess.Email = emailapi.Dialer()
 	}
 
 	// Init Meilisearch
@@ -64,6 +73,11 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
+		client, err := meilisearchapi.Client()
+		if err != nil {
+			panic(err)
+		}
+		serviceAccess.Meilisarch = &client
 	}
 
 	// Create Server
@@ -81,6 +95,9 @@ func main() {
 		Host: apiHost,
 		Port: apiPort,
 	})
+
+	// Add services
+	server.Services = serviceAccess
 
 	// Add Handlers ============
 
