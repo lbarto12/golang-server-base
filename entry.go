@@ -7,7 +7,7 @@ import (
 	"golang-server-base/api/meilisearchapi"
 	"golang-server-base/api/minioapi"
 	"golang-server-base/api/postgresapi"
-	routes "golang-server-base/api/routes/systemservices"
+	"golang-server-base/api/routes/systemservices"
 	"golang-server-base/api/webtokensapi"
 	"golang-server-base/src"
 	"log"
@@ -104,7 +104,7 @@ func main() {
 	// Add Handlers ============
 
 	// Builtin
-	systemhandlers := routes.SystemServicesHandlers{}
+	systemhandlers := systemservices.SystemServicesHandlers{}
 	server.AddHandler("GET /public/api/health", http.HandlerFunc(systemhandlers.Health))
 
 	if slices.Contains(enabledServices, apiservices.Sessions) {

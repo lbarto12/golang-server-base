@@ -1,4 +1,4 @@
-package routes
+package systemservices
 
 import (
 	"net/http"
