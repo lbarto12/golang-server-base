@@ -79,7 +79,7 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		serviceAccess.Meilisarch = &client
+		serviceAccess.Meilisearch = &client
 	}
 
 	// Create Server
@@ -104,7 +104,11 @@ func main() {
 	// Add Handlers ============
 
 	// Builtin
-	systemhandlers := systemservices.SystemServicesHandlers{}
+
+	systemhandlers := systemservices.SystemServicesHandlers{
+		Postgres: server.Services.Postgres,
+		Minio:    server.Services.Minio,
+	}
 	server.AddHandler("GET /public/api/health", http.HandlerFunc(systemhandlers.Health))
 
 	if slices.Contains(enabledServices, apiservices.Sessions) {
@@ -117,7 +121,7 @@ func main() {
 	// User defined
 
 	// Add from `routes.go` in `src`
-	server.AddHandlers(src.ConfigureRoutes())
+	server.AddHandlers(src.ConfigureRoutes(&server.Services))
 
 	// =========================
 

@@ -8,10 +8,10 @@ import (
 )
 
 type ServicesAccess struct {
-	Postgres   *sqlx.DB
-	Minio      *minio.Client
-	Email      *gomail.Dialer
-	Meilisarch *meilisearch.ServiceManager
+	Postgres    *sqlx.DB
+	Minio       *minio.Client
+	Email       *gomail.Dialer
+	Meilisearch *meilisearch.ServiceManager
 }
 
 // Available Services
