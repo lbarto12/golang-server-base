@@ -13,7 +13,7 @@ to many apps being built.
 - Current features
     - Session Handling
         - Managed by a database table called 'accounts' in postgres
-        - Accessed by the endpoints `"POST /publlic/api/sign-up"` and `"POST /public/api/sign-in"`
+        - Accessed by the endpoints `"POST /public/api/sign-up"` and `"POST /public/api/sign-in"`
     - API Health checks
         - Accessed by endpoint(s): `"GET /public/api/health"`
     - Managed Service Clients
