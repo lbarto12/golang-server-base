@@ -13,9 +13,9 @@ to many apps being built.
 - Current features
     - Session Handling
         - Managed by a database table called 'accounts' in postgres
-        - Accessed by the endpoints `"POST /api/sign-up"` and `"POST /api/sign-in"`
+        - Accessed by the endpoints `"POST /publlic/api/sign-up"` and `"POST /public/api/sign-in"`
     - API Health checks
-        - Accessed by endpoint(s): `"GET /api/health"`
+        - Accessed by endpoint(s): `"GET /public/api/health"`
     - Managed Service Clients
         - Services are accessed via the package `<servicename>api`
             - e.g. `db, err := postgresapi.Database()`
