@@ -10,6 +10,7 @@ import (
 	"golang-server-base/api/routes/systemservices"
 	"golang-server-base/api/webtokensapi"
 	"golang-server-base/src"
+	"golang-server-base/src/fwconfig"
 	"log"
 	"net/http"
 	"os"
@@ -28,7 +29,7 @@ func main() {
 		log.Fatal("Error loading .envx file:", envErr)
 	}
 
-	enabledServices := src.ConfigureServices()
+	enabledServices := fwconfig.ConfigureServices()
 
 	// Init connections with services
 
@@ -127,15 +128,15 @@ func main() {
 	// User defined
 
 	// Add from `routes.go` in `src`
-	server.AddHandlers(src.ConfigureRoutes(&server.Services))
+	server.AddHandlers(fwconfig.ConfigureRoutes(&server.Services))
 
 	// =========================
 
 	// Add Middleware
-	server.AddMiddleWares(src.ConfigureMiddleware())
+	server.AddMiddleWares(fwconfig.ConfigureMiddleware())
 
 	// Set user defined cors
-	server.Cors = src.ConfigureCors()
+	server.Cors = fwconfig.ConfigureCors()
 
 	// Run user code
 	src.Main(&server)

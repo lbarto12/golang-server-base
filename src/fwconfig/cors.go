@@ -1,4 +1,4 @@
-package src
+package fwconfig
 
 import (
 	"net/http"

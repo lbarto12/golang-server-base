@@ -1,4 +1,4 @@
-package src
+package fwconfig
 
 import (
 	"golang-server-base/api"
