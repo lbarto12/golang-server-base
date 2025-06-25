@@ -5,6 +5,11 @@ import (
 	"strings"
 )
 
+
+// JWT -> Authentication 
+// JWT -> {Roles, Id, Claims} -> Authorization 
+
+
 type WebTokenMiddleWare struct {
 	next   http.Handler
 	config WebTokenMiddleWareConfig
@@ -45,8 +50,6 @@ func (mw WebTokenMiddleWare) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid Token", http.StatusUnauthorized)
 		return
 	}
-
-	//TODO: Validate User? the above just validates that the JWT was made from our API
 
 	mw.next.ServeHTTP(w, r)
 }

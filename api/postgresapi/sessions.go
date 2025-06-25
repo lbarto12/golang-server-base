@@ -48,6 +48,13 @@ func SignUp(request models.Account) error {
 		return err
 	}
 
+	// (encrypted) user_acc -> (Root) Only what is needed to manage a session -> UserProfile (user_Profile_id) //login/sign
+	  // -> JWT { user_prof_id }
+	// (encrypted) user_priv -> (user_priv_id) Bank Details, Payment token etc. (root_id FK) //payment
+	// user_prof -> (user_prof_id) First Name, Last Name, Address //anytime
+
+  // todo: Case insensitive matching
+	// todo: remove user_name
 	// Insert row
 	query, err := tx.NamedQuery("INSERT INTO accounts (user_name, user_email, password_hash) VALUES (:user_name, :user_email, :password_hash)", request)
 	if err != nil {

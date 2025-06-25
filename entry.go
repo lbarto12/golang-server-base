@@ -20,7 +20,13 @@ import (
 
 func main() {
 	// Load Env
-	godotenv.Load()
+	// godotenv.Load()
+
+	// Load Env -> Handle Errors
+	envErr := godotenv.Load()
+	if envErr != nil {
+		log.Fatal("Error loading .envx file:", envErr)
+	}
 
 	enabledServices := src.ConfigureServices()
 
